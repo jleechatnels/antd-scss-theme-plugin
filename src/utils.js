@@ -63,7 +63,14 @@ export const loadScssThemeAsLess = themeScssPath => {
  *   variables used in Ant Design.
  */
 export const compileThemeVariables = themeScssPath => {
-	const themeEntryPath = require.resolve('antd/lib/style/themes/default.less');
+	let themeEntryPath;
+
+	try {
+		themeEntryPath = require.resolve('antd/lib/style/themes/default.less');
+	} catch (error) {
+		themeEntryPath = require.resolve('ng-zorro-antd/style/themes/default.less');
+	}
+
 	const variableOverrides = themeScssPath ? loadScssThemeAsLess(themeScssPath) : {};
 
 	return extractLessVariables(themeEntryPath, variableOverrides).then(variables =>
